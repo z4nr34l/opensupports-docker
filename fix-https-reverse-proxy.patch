@@ -1,0 +1,35 @@
+Subject: [PATCH] Fixed missing files
+---
+Index: client/src/index.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client/src/index.php b/client/src/index.php
+--- a/client/src/index.php	(revision 0b774af63afc01e6636987bb18f552b475278aa4)
++++ b/client/src/index.php	(date 1670840114863)
+@@ -1,6 +1,23 @@
+ <?php
++    function isHttps()
++    {
++        if (array_key_exists("HTTPS", $_SERVER) && 'on' === $_SERVER["HTTPS"]) {
++            return true;
++        }
++        if (array_key_exists("SERVER_PORT", $_SERVER) && 443 === (int)$_SERVER["SERVER_PORT"]) {
++            return true;
++        }
++        if (array_key_exists("HTTP_X_FORWARDED_SSL", $_SERVER) && 'on' === $_SERVER["HTTP_X_FORWARDED_SSL"]) {
++            return true;
++        }
++        if (array_key_exists("HTTP_X_FORWARDED_PROTO", $_SERVER) && 'https' === $_SERVER["HTTP_X_FORWARDED_PROTO"]) {
++            return true;
++        }
++        return false;
++    }
+     $path = rtrim(str_replace('\\','/',dirname($_SERVER['PHP_SELF'])), '/');
+-    $url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $path;
++    $url_host = getenv("HOST", false) !== false ? getenv("HOST", false) : $_SERVER['HTTP_HOST'];
++    $url = ( isHttps() ? 'https://' : 'http://' ) . $url_host . $path;
+     header('X-Frame-Options: DENY');
+ ?>
+ <!doctype html>

@@ -3,7 +3,7 @@ FROM php:7.4.30-apache-bullseye
 ARG APP_VERSION=4.11.0.20221212
 ENV URL https://github.com/z4nr34l/opensupports/releases/download/${APP_VERSION}-preview/opensupports_v${APP_VERSION}-preview.zip
 
-COPY fix-https-reverse-proxy.diff /var/www/html
+COPY fix-https-reverse-proxy.patch /var/www/html
 
 RUN set -ex; \
 	apt-get update; \
@@ -16,7 +16,7 @@ RUN set -ex; \
 	a2enmod rewrite; \
 	chmod 777 /var/www/html/api/config.php /var/www/html/api/files; \
 	chmod -R 777 /var/www/html/api/vendor/ezyang/htmlpurifier/library/HTMLPurifier/DefinitionCache/; \
-    patch /var/www/html/index.php < /var/www/html/fix-https-reverse-proxy.diff;
+    patch /var/www/html/index.php < /var/www/html/fix-https-reverse-proxy.patch;
 
 
 COPY entrypoint.sh /entrypoint.sh
