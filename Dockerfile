@@ -1,7 +1,7 @@
 FROM php:7.4.30-apache-bullseye
 
-ARG APP_VERSION=4.11.0
-ENV URL https://github.com/opensupports/opensupports/releases/download/v${APP_VERSION}/opensupports_v${APP_VERSION}.zip
+ARG APP_VERSION=4.11.0.20221212
+ENV URL https://github.com/z4nr34l/opensupports/releases/download/${APP_VERSION}-preview/opensupports_v${APP_VERSION}-preview.zip
 
 COPY fix-https-reverse-proxy.diff /var/www/html
 
